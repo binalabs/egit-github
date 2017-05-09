@@ -20,8 +20,6 @@ import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_SEARC
 import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_FIRST;
 import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_SIZE;
 
-import com.google.gson.reflect.TypeToken;
-
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -44,6 +42,8 @@ import org.eclipse.egit.github.core.client.GitHubRequest;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.client.PagedRequest;
 
+import com.google.gson.reflect.TypeToken;
+
 /**
  * Issue service class for listing, searching, and fetching {@link Issue}
  * objects using a {@link GitHubClient}.
@@ -62,6 +62,11 @@ public class IssueService extends GitHubService {
 	 * Filter by issue assignee
 	 */
 	public static final String FILTER_ASSIGNEE = "assignee"; //$NON-NLS-1$
+
+	/**
+     * Filter by issue assignee
+     */
+    public static final String FILTER_ASSIGNEES = "assignees"; //$NON-NLS-1$
 
 	/**
 	 * Filter by issue's milestone
@@ -592,9 +597,18 @@ public class IssueService extends GitHubService {
 		if (issue != null) {
 			params.put(FIELD_BODY, issue.getBody());
 			params.put(FIELD_TITLE, issue.getTitle());
-			User assignee = issue.getAssignee();
-			if (assignee != null)
-				params.put(FILTER_ASSIGNEE, assignee.getLogin());
+
+			List<User> assignees = issue.getAssignees();
+            if (assignees != null) {
+              List<String> assigneeLogins = new ArrayList<String>(assignees.size());
+              for (User assignee : assignees)
+                assigneeLogins.add(assignee.getLogin());
+              params.put(FILTER_ASSIGNEES, assigneeLogins);
+            } else {
+              User assignee = issue.getAssignee();
+              if (assignee != null)
+                params.put(FILTER_ASSIGNEE, assignee.getLogin());
+            }
 
 			Milestone milestone = issue.getMilestone();
 			if (milestone != null) {
