@@ -64,9 +64,9 @@ public class IssueService extends GitHubService {
 	public static final String FILTER_ASSIGNEE = "assignee"; //$NON-NLS-1$
 
 	/**
-     * Filter by issue assignee
-     */
-    public static final String FILTER_ASSIGNEES = "assignees"; //$NON-NLS-1$
+	 Filter by issue assignees
+	 */
+	public static final String FILTER_ASSIGNEES = "assignees"; //$NON-NLS-1$
 
 	/**
 	 * Filter by issue's milestone
@@ -599,16 +599,16 @@ public class IssueService extends GitHubService {
 			params.put(FIELD_TITLE, issue.getTitle());
 
 			List<User> assignees = issue.getAssignees();
-            if (assignees != null) {
-              List<String> assigneeLogins = new ArrayList<String>(assignees.size());
-              for (User assignee : assignees)
-                assigneeLogins.add(assignee.getLogin());
-              params.put(FILTER_ASSIGNEES, assigneeLogins);
-            } else {
-              User assignee = issue.getAssignee();
-              if (assignee != null)
-                params.put(FILTER_ASSIGNEE, assignee.getLogin());
-            }
+			if (assignees != null) {
+				List<String> assigneeLogins = new ArrayList<String>(assignees.size());
+				for (User assignee : assignees)
+					assigneeLogins.add(assignee.getLogin());
+				params.put(FILTER_ASSIGNEES, assigneeLogins);
+			} else {
+				User assignee = issue.getAssignee();
+				if (assignee != null)
+					params.put(FILTER_ASSIGNEE, assignee.getLogin());
+			}
 
 			Milestone milestone = issue.getMilestone();
 			if (milestone != null) {

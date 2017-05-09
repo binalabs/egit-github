@@ -62,14 +62,14 @@ public class Issue implements Serializable {
 	private List<User> assignees;
 
 	public List<User> getAssignees() {
-    return assignees;
-  }
+		return assignees;
+	}
 
-  public void setAssignees(List<User> assignees) {
-    this.assignees = assignees;
-  }
+	public void setAssignees(List<User> assignees) {
+		this.assignees = assignees;
+	}
 
-  private User user;
+	private User user;
 
 	private User closedBy;
 
